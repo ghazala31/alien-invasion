@@ -1,11 +1,12 @@
 import sys
 
 import pygame
+from pygame.sprite import Group
 
 from colors import colors
 from settings import Settings
 from ship import Ship
-from utils import check_events, update_screen
+from utils import check_events, update_screen, update_bullets
 
 def run_game():
     """
@@ -22,10 +23,15 @@ def run_game():
     # Create the ship
     ship = Ship(screen, game_settings)
 
+    # Create bullets group
+    bullets = Group()
+
     # Main loop of the game
     while True:
-        check_events(ship)
+        check_events(screen, ship, bullets, game_settings)
         ship.update()
-        update_screen(screen, ship, game_settings)
+        update_bullets(bullets)
+        update_screen(screen, ship, bullets, game_settings)
+
 
 run_game()
