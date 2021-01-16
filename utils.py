@@ -3,6 +3,7 @@ import sys
 import pygame
 
 from bullet import Bullet
+from alien import Alien
 
 def check_events(screen, ship, bullets, game_settings):
     """
@@ -35,6 +36,10 @@ def check_keydown_events(event, screen, ship, bullets, game_settings):
         # Fire bullet
         fire_bullet(screen, ship, bullets, game_settings)
 
+    elif event.key == pygame.K_q:
+        # Exit the game
+        sys.exit()
+
 
 def check_keyup_events(event, ship):
     """
@@ -49,7 +54,7 @@ def check_keyup_events(event, ship):
         ship.moving_left = False  
 
 
-def update_screen(screen, ship, bullets, game_settings):
+def update_screen(screen, ship, bullets, aliens, game_settings):
     """
     Update images on the screen and flip to the new screen
     """
@@ -62,6 +67,9 @@ def update_screen(screen, ship, bullets, game_settings):
 
     # Display the ship
     ship.blit()
+
+    # Display the alien
+    aliens.draw(screen)
 
     # Display the last drawn screen
     pygame.display.flip()
@@ -86,3 +94,37 @@ def fire_bullet(screen, ship, bullets, game_settings):
     if len(bullets) < game_settings.bullets_allowed:
         new_bullet = Bullet(screen, ship, game_settings)
         bullets.add(new_bullet)
+
+
+def get_number_of_aliens_per_row(game_settings, alien_width):
+    """
+    Determine the number of aliens that fit in one row
+    """
+    available_space_x = game_settings.screen_width - 2 * alien_width
+    number_of_aliens_x = int(available_space_x / (2 * alien_width))
+    return number_of_aliens_x
+
+
+def create_alien(screen, aliens, alien_number, game_settings):
+    """
+    Creates one alien and place it in the row
+    """
+    alien = Alien(screen, game_settings)
+    alien_width = alien.rect.width
+    alien.x = alien_width + 2 * alien_width * alien_number
+    alien.rect.x = alien.x
+    aliens.add(alien)
+
+def create_fleet(screen, aliens, game_settings):
+    """
+    Create a fleet of aliens
+    """
+    alien = Alien(screen, game_settings)
+    alien_width = alien.rect.width
+    
+    # Calcuate the number of aliens per row
+    number_of_aliens_x = get_number_of_aliens_per_row(game_settings, alien_width)
+
+    # Create the first row of aliens
+    for alien_number in range(number_of_aliens_x):
+        create_alien(screen, aliens, alien_number, game_settings)

@@ -6,7 +6,7 @@ from pygame.sprite import Group
 from colors import colors
 from settings import Settings
 from ship import Ship
-from utils import check_events, update_screen, update_bullets
+from utils import check_events, update_screen, update_bullets, create_fleet
 
 def run_game():
     """
@@ -26,12 +26,18 @@ def run_game():
     # Create bullets group
     bullets = Group()
 
+    # Create aliens group
+    aliens = Group()
+
+    # Create the fleet of aliens
+    create_fleet(screen, aliens, game_settings)
+
     # Main loop of the game
     while True:
         check_events(screen, ship, bullets, game_settings)
         ship.update()
         update_bullets(bullets)
-        update_screen(screen, ship, bullets, game_settings)
+        update_screen(screen, ship, bullets, aliens, game_settings)
 
 
 run_game()
