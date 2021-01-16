@@ -1,4 +1,4 @@
-from colors import colors
+from constants import colors, MovingDirection
 
 class Settings():
     """A class to store all the settings of the game"""
@@ -19,3 +19,8 @@ class Settings():
         self.bullet_height = 15
         self.bullet_color = colors['orange']
         self.bullets_allowed = 3
+
+        # Aliens settings
+        self.alien_speed = 1
+        self.fleet_drop_speed = 10
+        self.fleet_direction = MovingDirection.RIGHT.value

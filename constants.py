@@ -1,6 +1,6 @@
-"""
-Contains RGB values for a number of colors
-"""
+from enum import Enum
+
+# Contains RGB values for a number of colors
 colors = {'red': (255, 0, 0),
           'green': (0, 255, 0),
           'blue': (0, 0, 255),
@@ -8,3 +8,8 @@ colors = {'red': (255, 0, 0),
           'black': (0, 0, 0),
           'light_gray': (230, 230, 230),
           'orange': (212, 142, 13)}
+
+
+class MovingDirection(Enum):
+    RIGHT = 1
+    LEFT = -1
