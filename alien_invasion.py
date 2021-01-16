@@ -5,6 +5,7 @@ from pygame.sprite import Group
 
 from settings import Settings
 from game_stats import GameStats
+from scoreboard import Scoreboard
 from ship import Ship
 from button import Button
 from utils import (check_events, update_screen, update_bullets,
@@ -25,6 +26,9 @@ def run_game():
 
     # Create the play button
     button = Button(screen, game_settings, "Start the game")
+    
+    # Create score board
+    sb = Scoreboard(screen, game_settings, stats)
 
     # Create the ship
     ship = Ship(screen, game_settings)
@@ -40,13 +44,13 @@ def run_game():
 
     # Main loop of the game
     while True:
-        check_events(screen, ship, bullets, aliens, button, game_settings, stats)
+        check_events(screen, ship, bullets, aliens, button, game_settings, stats, sb)
 
         if stats.game_active:
             ship.update()
-            update_bullets(screen, ship, bullets, aliens, game_settings)
-            update_aliens(screen, ship,  bullets, aliens, game_settings, stats)
-        update_screen(screen, ship, bullets, aliens, button, game_settings, stats)
+            update_bullets(screen, ship, bullets, aliens, game_settings, stats, sb)
+            update_aliens(screen, ship,  bullets, aliens, game_settings, stats, sb)
+        update_screen(screen, ship, bullets, aliens, button, game_settings, stats, sb)
 
 
 run_game()
