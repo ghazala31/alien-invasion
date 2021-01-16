@@ -1,4 +1,5 @@
 import sys
+from time import sleep
 
 import pygame
 
@@ -87,12 +88,19 @@ def update_bullets(screen, ship, bullets, aliens, game_settings):
             bullets.remove(bullet)
     check_bullet_alien_collision(screen, ship, bullets, aliens, game_settings)
 
-def update_aliens(aliens, game_settings):
+def update_aliens(screen, ship, bullets, aliens, game_settings, stats):
     """
     Checks if the feet is at the edge then updates positions of aliens
     """
     check_fleet_edges(aliens, game_settings)
     aliens.update()
+
+    # Check for alien-ship collision
+    if pygame.sprite.spritecollideany(ship, aliens):
+        ship_hit(screen, ship, bullets, aliens, game_settings, stats)
+
+    # Check for aliens hitting the bottom of the screen
+    check_aliens_bottom(screen, ship, bullets, aliens, game_settings, stats)
 
 def fire_bullet(screen, ship, bullets, game_settings):
     """
@@ -182,3 +190,37 @@ def check_bullet_alien_collision(screen, ship, bullets, aliens, game_settings):
     if len(aliens) == 0:
         bullets.empty()
         create_fleet(screen, ship, aliens, game_settings)
+
+
+def ship_hit(screen, ship, bullets, aliens, game_settings, stats):
+    """
+    Respond to ship being hit by an alien
+    """
+    if stats.ships_left > 0:
+        # Decrement number of ships left
+        stats.ships_left -= 1
+
+        # Delete aliens and bullets
+        aliens.empty()
+        bullets.empty()
+        
+        # Create new fleet and recenter ship
+        create_fleet(screen, ship, aliens, game_settings)
+        ship.center_ship()
+
+        # Pause
+        sleep(0.5)
+
+    else:
+        stats.game_active = False
+
+
+def check_aliens_bottom(screen, ship, bullets, aliens, game_settings, stats):
+    """
+    Check if any of the aliens reached the bottom of the screen
+    """
+    screen_rect = screen.get_rect()
+    for alien in aliens.sprites():
+        if alien.rect.bottom >= screen_rect.bottom:
+            ship_hit(screen, ship, bullets, aliens, game_settings, stats)
+            break

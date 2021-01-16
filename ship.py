@@ -42,3 +42,9 @@ class Ship():
             self.center -= self.game_settings.ship_speed
 
         self.rect.centerx = self.center
+
+    def center_ship(self):
+        """
+        Center the ship on the screen
+        """
+        self.center = self.screen_rect.centerx

@@ -11,7 +11,6 @@ class Settings():
         self.screen_width = 800
         self.screen_height = 600
         self.bg_color = colors['light_gray']
-        self.ship_speed = 1.5  # pixels per key press
 
         # Bullet settings
         self.bullet_speed = 1
@@ -24,3 +23,7 @@ class Settings():
         self.alien_speed = 1
         self.fleet_drop_speed = 10
         self.fleet_direction = MovingDirection.RIGHT.value
+
+        # Ship settings
+        self.ship_speed = 1.5  # pixels per key press
+        self.ship_limit = 3
